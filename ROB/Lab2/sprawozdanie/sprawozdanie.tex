@@ -1,0 +1,109 @@
+\documentclass[12pt,a4paper,notitlepage]{article}
+%\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\selectlanguage{polish}
+\usepackage[top=3cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{fancyhdr}
+
+% nazwy kolorow
+\usepackage{color}
+% listingi
+\usepackage{listings}
+\definecolor{dkgreen}{rgb}{0,0.39063,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.50}
+\definecolor{mauve}{rgb}{0.77,0.77,0.77}
+\lstset{ %
+  language=Matlab,                % the language of the code
+  basicstyle=\footnotesize,           % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},      % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+                                  % also try caption instead of title
+  keywordstyle=\color{blue},          % keyword style
+  commentstyle=\color{dkgreen},       % comment style
+  stringstyle=\color{mauve},         % string literal style
+}
+
+
+
+\begin{document}
+\lhead{Karol Katerżawa}
+\chead{}
+\rhead{ROB - Ćwiczenie 2.}
+
+\pagestyle{fancy}
+\section*{Klasyfikacja optymalna Bayesa}
+\subsection*{Sprawdzenie danych}
+Obliczenie skrajnych wartości zbioru testowego, analiza danych statystycznych a także obejrzenie histogramów spowodowało odrzucenie ze zbioru testowego próbek numer \textbf{186} oraz \textbf{641}.
+\subsection*{Wybór cech}
+Przy pomocy programu \textit{plot2features} wyświetliłem rozkłady różnych par cech i wybrałem ostatecznie cechy \textbf{drugą} i \textbf{trzecią}.
+
+\subsection*{Budowa klasyfikatorów}
+Klasyfikatory ponumerowałem zgodnie z numeracją metod w instrukcji. Na początku przyjąłem $h_1 = 0,01$ (oczywiście jest ono uwzględniane tylko w klasyfikatorze korzystającym z okna Parzena).
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Nr. klasyfikatora	&	Jakość klasyfikatora \\\hline
+	1				&		0.84978		\\\hline
+	2				&		0.97697		\\\hline
+	3				&		0.61568		\\\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Dobór szerokości okna}
+Od razu widać, że szerokość okna Parzena jest bardzo źle dobrana, bo jakość klasyfikatora wyszła bardzo słaba, a wręcz niebezpiecznie zbliżyła się do 50\%. Tabelka przedstawia zmianę jakości klasyfikatora przy zmianie szerokości okna. 
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+	$h_1$	&	Jakość klasyfikatora \\\hline
+	0.01		&		0.61568		\\\hline
+	0.001		&		0.74945		\\\hline
+	0.0001		&		0.98958		\\\hline
+	0.00001 	&		0.99561		\\\hline
+	0.000001	&		0.98958		\\\hline
+	0.0000001	&		0.71107		\\\hline	
+\end{tabular}
+\end{center}
+Wyraźnie widać, że przy zmniejszaniu szerokości okna jakość klasyfikatora się poprawia do momentu osiągnięcia wartości optymalnej. Dalsze zmniejszanie okna powoduje znów pogarszanie jakości klasyfikatora. 
+
+\subsection*{Różne zbiory testowe}
+Ocena wpływu doboru różnej wielkości zbiorów uczącychc na klasyfikację zbioru testowego. 
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Część zbioru train	&	Klasyfikator 1 	&	Klasyfikator 2 	&	Klasyfikator 3 \\\hline
+	$\frac{1}{10}$	&		0.84978		&					&					\\\hline
+	$\frac{1}{4}$	&		0.97697		&					&					\\\hline
+	$\frac{1}{2}$	&		0.61568		&					&					\\\hline
+	$1$				&		0.61568		&					&					\\\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Zmiana prawdopodobieństwa \textit{a priori}}
+
+
+
+\subsection*{Porównanie z klasyfikatorem 1-NN}
+Uruchomienie klasyfikatora 1-NN na danych kart dało rezultat:
+\begin{verbatim}
+quality =  0.99561
+\end{verbatim}
+
+
+
+\end{document}
+
+
+
