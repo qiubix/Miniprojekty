@@ -1,11 +1,8 @@
-Miniprojekty
-============
+Rogue
+=====
 
-Niewielkie programiki i skrypty w różnych językach
+Various classifiers for Pattern Recognition class. 
 
 =====
-- ROB
-- STP
-- ASU
-- ARKO
-- MNUM
+- 1nn
+- jack-knife
