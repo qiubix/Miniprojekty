@@ -1,0 +1,49 @@
+Proszê Pañstwa,
+
+Publikujê zestaw funkcji, które wyznaczaj¹ punkt odniesienia dla Pañstwa prób 
+rozpoznawania rêcznego pisma blokowego. Zawieraj¹ one implementacjê redukcji wymiarów
+metod¹ sk³adowych g³ównych prezentowan¹ na wyk³adzie, oraz klasyfikacjê najbli¿szego
+s¹siedztwa (5-NN) z g³osowaniem bezwzglêdn¹ wiêkszoœci¹ g³osów.
+Implementacja jest nieco "na wyrost" (zosta³a przygotowana pod eksperymenty z doborem 
+wartoœci k oraz metody g³osowania).
+
+Niestety, ze wzglêdu na wymagania pamiêciowe, przedstawione rozwi¹zanie nie dzia³a
+w Octave 3.0.3 pod systemem Windows XP - czyli konfiguracji, która dzia³a w laboratorium. W funkcjach prepTransform i pcaTransform znajduj¹ siê zakomentowane fragmenty umo¿liwiaj¹ce uruchomienie testu z mniej zach³annym wykorzystaniem pamiêci.
+
+Ja testy przeprowadzi³em korzystaj¹c z Octave w wersji 3.6.1 pod systemem Windows 7 (jak wynika ze stanu komentarzy w funkcji pcaTransform, tak¿e natkn¹³em siê na ograniczenia pamiêci).
+
+# Za³adowanie zbiorów danych MNIST
+[tvec tlab tstv tstl] = readSets(); 
+
+# Policzenie transformacji do przestrzeni PCA (40-wymiarowej) 
+[mu trmx] = prepTransform(tvec, 40);
+
+# Zbiory ucz¹cy i testowy do przestrzeni PCA
+tvec = pcaTransform(tvec, mu, trmx);
+tstv = pcaTransform(tstv, mu, trmx);
+
+# wyznaczenie najbli¿szych s¹siadów próbek ze zbioru testowego w zbiorze ucz¹cym
+# tu jest nadmiar, bo wyznaczam etykiety i odleg³oœci do 15 najbli¿szych s¹siadów
+# UWAGA: ten etap mo¿e potrwaæ (u mnie > 20 minut)
+
+[letlab letdist] = labknn(tvec, tlab, tstv, 15);
+
+# klasyfikacja 5-NN z g³osowaniem bezwzglêdn¹ wiêkszoœci¹ - wynik w postaci macierzy pomy³ek
+
+lettersCfMx = simpleMajority(letlab(:, 1:5), tstl);
+
+
+# dane syntetyczne (poprawne, b³êdy, wymijaj¹ce) do wstawienia do tabelki
+
+compErrors(lettersCfMx)
+
+# test dla cyfr pisanych przez studentów WEiTI
+[tstl tstv] = readmnist('testdigits-images.idx3-ubyte', 'testdigits-labels.idx1-ubyte');
+tstv = pcaTransform(tstv, mu, trmx);
+[diglab digdist] = labknn(tvec, tlab, tstv, 15);
+digitsCfMx = simpleMajority(diglab(:, 1:5), tstl);
+compErrors(digitsCfMx)
+
+
+Rajmund Ko¿uszek
+
